@@ -9,6 +9,7 @@ import {
   Users,
   Clock3,
 } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
 import { fetchReports } from '../services/reportService'
 
 const staticRecentReports = [

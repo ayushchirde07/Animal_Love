@@ -15,7 +15,7 @@
   border-radius: 1.75rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  box-shadow: 0 30px 70px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 30px 70px var(--shadow);
 }
 
 .sidebar-profile {
@@ -140,7 +140,7 @@
   border-radius: 1.5rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  box-shadow: 0 24px 50px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 24px 50px var(--shadow);
   z-index: 10;
 }
 
@@ -181,6 +181,16 @@
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+  align-items: center;
+}
+
+.profile-actions .button {
+  min-height: 52px;
+  padding: 0.75rem 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 }
 
 .profile-grid,
@@ -196,7 +206,8 @@
   border-radius: 1.75rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.1);
+  box-shadow: 0 24px 60px var(--shadow);
+  color: var(--text);
 }
 
 .profile-badge {
@@ -204,8 +215,18 @@
   gap: 1rem;
 }
 
+.profile-badge > img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+}
+
 .profile-badge h2 {
   margin: 0;
+  color: var(--text);
 }
 
 .profile-details {
@@ -273,9 +294,9 @@
 }
 
 .photo-preview img {
-  width: 96px;
-  height: 96px;
-  border-radius: 1.5rem;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--border);
 }
@@ -293,6 +314,7 @@
 .profile-page h1,
 .settings-page h1 {
   margin: 0;
+  color: var(--text);
 }
 
 .profile-page p,
@@ -308,6 +330,7 @@
 
 .card-header h2 {
   margin: 0 0 0.5rem;
+  color: var(--text);
 }
 
 .settings-actions {
@@ -343,6 +366,11 @@
   border: 1px solid var(--border);
   background: var(--surface-strong);
   color: var(--text);
+}
+
+.settings-panel input::placeholder {
+  color: var(--muted);
+  opacity: 1;
 }
 
 .form-error {
@@ -390,5 +418,9 @@
 
   .header-actions {
     width: 100%;
+  }
+
+  .profile-actions .button {
+    flex: 1;
   }
 }

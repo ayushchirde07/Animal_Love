@@ -4,6 +4,31 @@
   padding: 3.5rem 0 4rem;
 }
 
+.landing-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.25rem;
+}
+
+.landing-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 700;
+  box-shadow: 0 10px 24px var(--shadow);
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+
+.landing-theme-toggle:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+
 .landing-hero {
   display: grid;
   gap: 2.5rem;
@@ -311,6 +336,22 @@
   box-shadow: 0 40px 90px rgba(15, 23, 42, 0.12);
 }
 
+.auth-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  margin-bottom: 1.5rem;
+  color: var(--muted);
+  font-weight: 600;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.auth-back-link:hover {
+  color: var(--primary);
+  transform: translateX(-2px);
+}
+
 .auth-head {
   margin-bottom: 2rem;
 }
@@ -337,6 +378,59 @@
   gap: 0.65rem;
   font-weight: 600;
   color: var(--text);
+}
+
+.role-fieldset {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.role-fieldset legend {
+  padding: 0;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.role-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.role-option {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--surface-strong);
+  cursor: pointer;
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+
+.role-option.selected {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.role-option input {
+  margin: 0.28rem 0 0;
+  accent-color: var(--primary);
+}
+
+.role-option span {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.role-option small {
+  color: var(--muted);
+  font-weight: 400;
+  line-height: 1.35;
 }
 
 .auth-form input[type='text'],
@@ -427,6 +521,10 @@
     flex-direction: column;
     align-items: stretch;
   }
+
+  .role-options {
+    grid-template-columns: 1fr;
+  }
 }
 
 .page-loading {
@@ -485,6 +583,7 @@
   min-height: 160px;
   display: grid;
   gap: 1rem;
+  color: var(--text);
 }
 
 .stat-icon {
@@ -530,6 +629,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  color: var(--text);
 }
 
 .card-header {
@@ -665,6 +765,176 @@
   padding: 3.5rem 0 4rem;
   display: grid;
   gap: 2rem;
+}
+
+.workflow-page {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 3.5rem 0 4rem;
+  display: grid;
+  gap: 1.75rem;
+}
+
+.workflow-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.5rem;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 1.75rem;
+  background: var(--surface);
+  box-shadow: 0 24px 60px var(--shadow);
+}
+
+.workflow-header h1,
+.workflow-list h2 {
+  margin: 0;
+  color: var(--text);
+}
+
+.workflow-header .dashboard-copy {
+  margin-bottom: 0;
+}
+
+.workflow-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.workflow-summary .stat-card {
+  min-height: 0;
+  border: 1px solid var(--border);
+}
+
+.workflow-list {
+  padding: 1.75rem;
+  border: 1px solid var(--border);
+  border-radius: 1.75rem;
+  background: var(--surface);
+  box-shadow: 0 24px 60px var(--shadow);
+}
+
+.workflow-list .section-header {
+  margin-bottom: 1.25rem;
+}
+
+.workflow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.workflow-card {
+  display: grid;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  background: var(--surface-strong);
+}
+
+.workflow-card-header,
+.workflow-actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.workflow-id,
+.workflow-title,
+.workflow-content p {
+  margin: 0;
+}
+
+.workflow-id {
+  color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.workflow-title {
+  margin-top: 0.25rem;
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.workflow-content {
+  display: grid;
+  gap: 1rem;
+  color: var(--muted);
+}
+
+.workflow-meta {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.workflow-actions-row .button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+.workflow-error,
+.workflow-success {
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-weight: 600;
+}
+
+.workflow-error {
+  color: var(--danger);
+  border-color: var(--danger-soft);
+}
+
+.workflow-success {
+  color: var(--primary);
+  border-color: var(--primary-soft);
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  padding: 2rem;
+  border: 1px dashed var(--border);
+  border-radius: 1.5rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.empty-state p {
+  margin: 0;
+}
+
+.incoming-toast {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  max-width: min(360px, calc(100vw - 3rem));
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 24px 60px var(--shadow);
+}
+
+.incoming-toast p {
+  margin: 0;
 }
 
 .report-header {
@@ -846,6 +1116,11 @@
   .upload-preview {
     grid-template-columns: 1fr;
   }
+
+  .workflow-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 720px) {
@@ -859,5 +1134,23 @@
 
   .report-actions {
     justify-content: stretch;
+  }
+
+  .workflow-page {
+    width: min(100%, calc(100% - 1.5rem));
+    padding: 1.5rem 0 2.5rem;
+  }
+
+  .workflow-header,
+  .workflow-list {
+    padding: 1.25rem;
+  }
+
+  .workflow-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow-card-header {
+    flex-direction: column;
   }
 }

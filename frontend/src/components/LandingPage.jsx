@@ -7,7 +7,10 @@ import {
   HeartHandshake,
   Sparkles,
   Layers,
+  Moon,
+  Sun,
 } from 'lucide-react'
+import { useTheme } from '../context/ThemeContext'
 
 const features = [
   {
@@ -39,8 +42,22 @@ const stats = [
 ]
 
 export default function LandingPage() {
+  const { theme, setTheme } = useTheme()
+  const isDark = theme === 'dark'
+
   return (
     <main className="landing-page">
+      <div className="landing-toolbar">
+        <button
+          type="button"
+          className="landing-theme-toggle"
+          onClick={() => setTheme(isDark ? 'light' : 'dark')}
+          aria-label={`Switch to ${isDark ? 'light' : 'dark'} theme`}
+        >
+          {isDark ? <Sun size={18} /> : <Moon size={18} />}
+          <span>{isDark ? 'Light mode' : 'Dark mode'}</span>
+        </button>
+      </div>
       <section className="landing-hero">
         <div className="hero-copy">
           <span className="landing-badge">Animal Welfare | Rescue Management</span>

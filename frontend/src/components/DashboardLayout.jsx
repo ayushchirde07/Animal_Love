@@ -32,7 +32,7 @@ export default function DashboardLayout({ children }) {
       <aside className="sidebar-card">
         <div className="sidebar-profile">
           <img
-            src={user?.profileImage || '/avatar-placeholder.png'}
+            src={user?.profileImage || '/avatar-placeholder.svg'}
             alt={user?.name || 'Profile'}
             className="avatar-large"
           />
@@ -79,7 +79,7 @@ export default function DashboardLayout({ children }) {
 
           <div className="header-actions">
             <button className="button button-secondary header-menu" type="button" onClick={() => setMenuOpen((value) => !value)}>
-              <img src={user?.profileImage || '/avatar-placeholder.png'} alt="Avatar" className="avatar-small" />
+              <img src={user?.profileImage || '/avatar-placeholder.svg'} alt="Avatar" className="avatar-small" />
               <span>{user?.name || 'Guest'}</span>
               <ChevronDown size={16} />
             </button>

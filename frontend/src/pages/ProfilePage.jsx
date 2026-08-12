@@ -56,7 +56,7 @@ export default function ProfilePage() {
           transition={{ duration: 0.3 }}
         >
           <div className="profile-badge">
-            <img src={user?.profileImage || '/avatar-placeholder.png'} alt="Profile" />
+            <img src={user?.profileImage || '/avatar-placeholder.svg'} alt="Profile" />
             <div>
               <h2>{user?.name || 'Citizen'}</h2>
               <p>{user?.role || 'Citizen'}</p>

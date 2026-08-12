@@ -9,6 +9,7 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('')
   const [mobile, setMobile] = useState('')
   const [city, setCity] = useState('')
+  const [role, setRole] = useState('Citizen')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -28,8 +29,8 @@ export default function RegisterPage() {
 
     setSubmitting(true)
     try {
-      await register({ fullName, email, mobile, city, password })
-      navigate('/login')
+      await register({ fullName, email, mobile, city, password, role })
+      navigate('/login', { state: { message: `Your ${role} account is ready. Please log in.` } })
     } catch (err) {
       setError(err?.response?.data?.message || 'Registration failed. Please try again.')
       setSubmitting(false)
@@ -96,6 +97,38 @@ export default function RegisterPage() {
               required
             />
           </label>
+
+          <fieldset className="role-fieldset">
+            <legend>Account type</legend>
+            <div className="role-options">
+              <label className={`role-option ${role === 'Citizen' ? 'selected' : ''}`}>
+                <input
+                  type="radio"
+                  name="role"
+                  value="Citizen"
+                  checked={role === 'Citizen'}
+                  onChange={(event) => setRole(event.target.value)}
+                />
+                <span>
+                  <strong>Citizen</strong>
+                  <small>Report animal rescues and follow progress.</small>
+                </span>
+              </label>
+              <label className={`role-option ${role === 'NGO' ? 'selected' : ''}`}>
+                <input
+                  type="radio"
+                  name="role"
+                  value="NGO"
+                  checked={role === 'NGO'}
+                  onChange={(event) => setRole(event.target.value)}
+                />
+                <span>
+                  <strong>NGO</strong>
+                  <small>Review requests and coordinate rescue operations.</small>
+                </span>
+              </label>
+            </div>
+          </fieldset>
 
 
           <label className="password-field">

@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Eye, EyeOff } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 
@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
   const { login } = useAuth()
 
   const handleSubmit = async (event) => {
@@ -38,12 +39,16 @@ export default function LoginPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: 'easeOut' }}
       >
+        <Link to="/" className="auth-back-link">
+          <ArrowLeft size={18} /> Back to home
+        </Link>
         <div className="auth-head">
           <p className="section-meta">Welcome back to Animal Guardian</p>
           <h1>Login to continue</h1>
           <p className="auth-copy">
             Access your rescue dashboard and submit or review animal reports securely.
           </p>
+          {location.state?.message && <p className="form-success">{location.state.message}</p>}
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>

@@ -149,7 +149,7 @@ export default function SettingsPage() {
             </div>
             <div className="profile-photo-row">
               <div className="photo-preview">
-                <img src={previewUrl || '/avatar-placeholder.png'} alt="Profile preview" />
+                <img src={previewUrl || '/avatar-placeholder.svg'} alt="Profile preview" />
               </div>
               <div className="photo-actions">
                 <label className="button button-secondary">
