@@ -86,11 +86,7 @@ export default function CitizenDashboard() {
   return (
     <main className="dashboard-page">
       <section className="dashboard-hero">
-        <div>
-          <p className="section-meta">Citizen dashboard</p>
-          <h1>Welcome back, {user?.name || 'Guardian'} 👋</h1>
-          <p className="dashboard-copy">📍 {user?.city || 'Unknown city'}</p>
-        </div>
+        
         <div className="dashboard-actions">
           <Link to="/citizen/report" className="button button-secondary">
             New Report
