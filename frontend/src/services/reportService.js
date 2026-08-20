@@ -19,3 +19,8 @@ export const fetchReportById = async (id) => {
   const response = await api.get(`/api/reports/${id}`)
   return response.data
 }
+
+export const deleteReport = async (id) => {
+  const response = await api.delete(`/api/reports/${id}`)
+  return response.data
+}

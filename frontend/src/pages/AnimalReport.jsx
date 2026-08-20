@@ -149,6 +149,12 @@ export default function AnimalReport() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    
+    // Prevent accidental auto-submits (e.g. hitting Enter on mobile keyboard) before the final step
+    if (step !== steps.length - 1) {
+      return
+    }
+
     setSubmitted(true)
 
     const finalAnimalType = form.animalType === 'Other' && form.otherAnimalName
@@ -459,6 +465,7 @@ export default function AnimalReport() {
           </button>
           {step < steps.length - 1 ? (
             <button
+              key="next"
               type="button"
               className="button button-primary"
               disabled={
@@ -467,12 +474,15 @@ export default function AnimalReport() {
                 (step === 3 && form.images.length === 0) ||
                 (step === 4 && (!form.latitude || !form.longitude || !form.locationNote.trim()))
               }
-              onClick={() => setStep((current) => Math.min(current + 1, steps.length - 1))}
+              onClick={(e) => {
+                e.preventDefault();
+                setStep((current) => Math.min(current + 1, steps.length - 1))
+              }}
             >
               Next <ArrowRight size={18} />
             </button>
           ) : (
-            <button type="submit" className="button button-primary" disabled={submitted}>
+            <button key="submit" type="submit" className="button button-primary" disabled={submitted}>
               {submitted ? 'Submitting…' : 'Submit report'}
             </button>
           )}

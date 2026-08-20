@@ -1,26 +1,39 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { fetchReports } from '../services/reportService'
-import { MapPin, Calendar, ArrowLeft } from 'lucide-react'
+import { fetchReports, deleteReport } from '../services/reportService'
+import { MapPin, Calendar, ArrowLeft, Trash2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 export default function CitizenHistory() {
   const [reports, setReports] = useState([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    const loadReports = async () => {
-      try {
-        const data = await fetchReports()
-        setReports(data.reports || [])
-      } catch (err) {
-        console.error('Failed to fetch history:', err)
-      } finally {
-        setLoading(false)
-      }
+  const loadReports = async () => {
+    try {
+      const data = await fetchReports()
+      setReports(data.reports || [])
+    } catch (err) {
+      console.error('Failed to fetch history:', err)
+    } finally {
+      setLoading(false)
     }
+  }
+
+  useEffect(() => {
     loadReports()
   }, [])
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this report? This action cannot be undone.')) {
+      try {
+        await deleteReport(id)
+        setReports(current => current.filter(r => r._id !== id))
+      } catch (err) {
+        console.error('Failed to delete report:', err)
+        alert('Could not delete report. Please try again.')
+      }
+    }
+  }
 
   return (
     <main className="workflow-page">
@@ -56,14 +69,24 @@ export default function CitizenHistory() {
                   whileHover={{ y: -6 }}
                   transition={{ type: 'spring', stiffness: 220, damping: 20 }}
                 >
-                  <div className="workflow-card-header">
+                  <div className="workflow-card-header" style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
                     <div>
-                      <p className="workflow-id">{report.reportId}</p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <p className="workflow-id">{report.reportId}</p>
+                        <span className="badge badge-primary" style={{ fontSize: '0.65rem', padding: '0.1rem 0.4rem' }}>
+                          {report.status || 'SUBMITTED'}
+                        </span>
+                      </div>
                       <p className="workflow-title">{report.animalType} report</p>
                     </div>
-                    <span className="badge badge-primary">
-                      {report.status || 'SUBMITTED'}
-                    </span>
+                    <button 
+                      onClick={() => handleDelete(report._id)}
+                      className="icon-button"
+                      title="Delete Report"
+                      style={{ color: 'var(--error, #ef4444)' }}
+                    >
+                      <Trash2 size={18} />
+                    </button>
                   </div>
                   <div className="workflow-content">
                     <p><strong>Condition:</strong> {report.condition} (Severity: {report.severity})</p>

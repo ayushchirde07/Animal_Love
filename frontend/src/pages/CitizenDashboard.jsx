@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { fetchReports } from '../services/reportService'
+import MapView from '../components/MapView'
 
 const staticRecentReports = [
   {
@@ -73,8 +74,29 @@ export default function CitizenDashboard() {
       updated: report.updatedAt
         ? new Date(report.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         : 'Just now',
+      raw: report,
     }))
   }, [reports])
+
+  const mapMarkers = useMemo(() => {
+    // Default Nagpur coordinates
+    const baseLat = 21.1458
+    const baseLng = 79.0882
+
+    return recentReports.map((report, index) => {
+      // Create slight variations in coordinates to scatter pins around the city
+      const latOffset = (Math.random() - 0.5) * 0.05
+      const lngOffset = (Math.random() - 0.5) * 0.05
+      
+      return {
+        id: report.id,
+        lat: baseLat + latOffset,
+        lng: baseLng + lngOffset,
+        title: report.type,
+        description: `Status: ${report.status} | Location: ${report.location}`
+      }
+    })
+  }, [recentReports])
 
   const dashboardStats = [
     { label: 'Active Reports', value: reports.length.toString(), icon: ClipboardList },
@@ -177,9 +199,8 @@ export default function CitizenDashboard() {
             <h2>Nearby rescue partners</h2>
             <span className="badge badge-muted">NGOs</span>
           </div>
-          <div className="map-placeholder">
-            <MapPin size={28} />
-            <p>Live map coming soon</p>
+          <div className="dashboard-map-container" style={{ marginTop: '1rem', borderRadius: '0.75rem', overflow: 'hidden', border: '1px solid var(--border)' }}>
+            <MapView markers={mapMarkers} center={[21.1458, 79.0882]} zoom={11} height="280px" />
           </div>
         </article>
 
