@@ -196,6 +196,18 @@ export default function RescueWorkflow() {
                         <span>{report.severity} severity</span>
                         <span>Reporter: {report.reporter?.fullName || 'Unknown'}</span>
                       </div>
+                      {report.images && report.images.length > 0 && (
+                        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
+                          {report.images.map((img, idx) => {
+                            const srcUrl = img.startsWith('data:image') || img.startsWith('http') 
+                              ? img 
+                              : `http://localhost:5000${img.startsWith('/') ? img : '/' + img}`
+                            return (
+                               <img key={idx} src={srcUrl} alt="Animal" style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8, border: '1px solid var(--border)' }} />
+                            )
+                          })}
+                        </div>
+                      )}
                     </div>
                     <div className="workflow-actions-row">
                       {action ? (

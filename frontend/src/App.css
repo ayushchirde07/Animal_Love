@@ -79,8 +79,15 @@
   transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
 }
 
-.button:hover {
+.button:hover:not(:disabled) {
   transform: translateY(-1px);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .button-primary {
@@ -750,8 +757,19 @@
   }
 
   .dashboard-actions {
-    flex-direction: column;
-    align-items: stretch;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .dashboard-actions .button {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0.5rem;
+    min-width: 0;
   }
 
   .stat-card {
@@ -992,7 +1010,45 @@
 }
 
 .form-step h2 {
-  margin: 0 0 1rem;
+  margin: 0 0 1.25rem;
+}
+
+.form-step label {
+  display: grid;
+  gap: 0.65rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1.25rem;
+}
+
+.form-step label:last-child {
+  margin-bottom: 0;
+}
+
+.form-step input[type='text'],
+.form-step textarea,
+.form-step select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 0.95rem 1rem;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--surface-strong);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-step input[type='text']:focus,
+.form-step textarea:focus,
+.form-step select:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.form-step textarea {
+  resize: vertical;
+  min-height: 100px;
 }
 
 .button-group {
@@ -1060,6 +1116,10 @@
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.location-grid label {
+  margin-bottom: 0;
 }
 
 .review-grid {

@@ -28,6 +28,8 @@ export default function ProfilePage() {
     loadStats()
   }, [])
 
+  const prefix = user?.role === 'NGO' ? '/ngo' : '/citizen'
+
   return (
     <main className="profile-page">
       <section className="profile-header">
@@ -35,14 +37,14 @@ export default function ProfilePage() {
           <p className="section-meta">Your profile</p>
           <h1>Profile details</h1>
           <p className="dashboard-copy">
-            Review your citizen account information and keep your contact details up to date.
+            Review your {user?.role === 'NGO' ? 'NGO' : 'citizen'} account information and keep your contact details up to date.
           </p>
         </div>
         <div className="profile-actions">
-          <Link to="/citizen/settings" className="button button-secondary">
+          <Link to={`${prefix}/settings`} className="button button-secondary">
             Settings
           </Link>
-          <Link to="/citizen/settings" className="button button-primary">
+          <Link to={`${prefix}/settings`} className="button button-primary">
             Edit Profile
           </Link>
         </div>

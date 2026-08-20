@@ -86,12 +86,16 @@ export default function CitizenDashboard() {
   return (
     <main className="dashboard-page">
       <section className="dashboard-hero">
-        
+        <div>
+          <p className="section-meta">Citizen dashboard</p>
+        </div>
         <div className="dashboard-actions">
           <Link to="/citizen/report" className="button button-secondary">
             New Report
           </Link>
-          <button className="button button-primary">View history</button>
+          <Link to="/citizen/history" className="button button-primary">
+            View history
+          </Link>
         </div>
       </section>
 

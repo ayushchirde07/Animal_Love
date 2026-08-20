@@ -11,6 +11,10 @@ import {
   ArrowRight,
   ArrowLeft,
   CheckCircle2,
+  Dog,
+  Cat,
+  Bird,
+  HelpCircle,
 } from 'lucide-react'
 const MapView = lazy(() => import('../components/MapView'))
 import { createReport } from '../services/reportService'
@@ -47,6 +51,7 @@ export default function AnimalReport() {
   const [reportId] = useState('AG-2026-0005')
   const [form, setForm] = useState({
     animalType: 'Dog',
+    otherAnimalName: '',
     condition: 'Accident',
     severity: 'High',
     description: '',
@@ -146,13 +151,26 @@ export default function AnimalReport() {
     event.preventDefault()
     setSubmitted(true)
 
+    const finalAnimalType = form.animalType === 'Other' && form.otherAnimalName
+      ? form.otherAnimalName
+      : form.animalType;
+
     try {
+      const base64Images = await Promise.all(
+        form.images.map(file => new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = error => reject(error);
+        }))
+      );
+
       await createReport({
-        animalType: form.animalType,
+        animalType: finalAnimalType,
         condition: form.condition,
         severity: form.severity,
         description: form.description,
-        images: [],
+        images: base64Images,
         video: null,
         latitude: form.latitude,
         longitude: form.longitude,
@@ -196,17 +214,44 @@ export default function AnimalReport() {
             <div className="form-step">
               <h2>Choose the animal type</h2>
               <div className="button-group">
-                {animalTypes.map((type) => (
-                  <button
-                    key={type}
-                    type="button"
-                    className={`pill-button ${form.animalType === type ? 'selected' : ''}`}
-                    onClick={() => setForm((current) => ({ ...current, animalType: type }))}
-                  >
-                    <PawPrint size={16} /> {type}
-                  </button>
-                ))}
+                {animalTypes.map((type) => {
+                  let Icon = PawPrint;
+                  if (type === 'Dog') Icon = Dog;
+                  else if (type === 'Cat') Icon = Cat;
+                  else if (type === 'Bird') Icon = Bird;
+                  else if (type === 'Other') Icon = HelpCircle;
+
+                  return (
+                    <button
+                      key={type}
+                      type="button"
+                      className={`pill-button ${form.animalType === type ? 'selected' : ''}`}
+                      onClick={() => setForm((current) => ({ ...current, animalType: type }))}
+                    >
+                      <Icon size={16} /> {type}
+                    </button>
+                  );
+                })}
               </div>
+              {form.animalType === 'Other' && (
+                <div style={{ marginTop: '1.5rem' }}>
+                  <label>
+                    Specify animal name
+                    <input
+                      type="text"
+                      placeholder="e.g. Rabbit, Turtle"
+                      value={form.otherAnimalName}
+                      onChange={handleChange('otherAnimalName')}
+                      required
+                    />
+                  </label>
+                  {!form.otherAnimalName.trim() && (
+                    <p className="form-error" style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
+                      Please write the animal type to continue.
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
@@ -249,6 +294,11 @@ export default function AnimalReport() {
                   required
                 />
               </label>
+              {!form.description.trim() && (
+                <p className="form-error" style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
+                  Please provide a description of the condition.
+                </p>
+              )}
             </div>
           )}
 
@@ -267,6 +317,13 @@ export default function AnimalReport() {
                 </div>
                 <input type="file" accept="video/*" onChange={handleVideoUpload} />
               </label>
+              
+              {form.images.length === 0 && (
+                <p className="form-error" style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
+                  Please upload at least one photo to continue.
+                </p>
+              )}
+
               <div className="upload-preview">
                 {previewImages.length ? (
                   previewImages.map((src, index) => (
@@ -339,6 +396,12 @@ export default function AnimalReport() {
                   placeholder="Add nearby landmarks or street names"
                 />
               </label>
+              
+              {(!form.latitude || !form.longitude || !form.locationNote.trim()) && (
+                <p className="form-error" style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
+                  Please fill in all location details (Latitude, Longitude, and Location note).
+                </p>
+              )}
             </div>
           )}
 
@@ -352,7 +415,7 @@ export default function AnimalReport() {
                 </div>
                 <div className="review-item">
                   <p className="review-label">Animal type</p>
-                  <p>{form.animalType}</p>
+                  <p>{form.animalType === 'Other' && form.otherAnimalName ? form.otherAnimalName : form.animalType}</p>
                 </div>
                 <div className="review-item">
                   <p className="review-label">Condition</p>
@@ -398,6 +461,12 @@ export default function AnimalReport() {
             <button
               type="button"
               className="button button-primary"
+              disabled={
+                (step === 0 && form.animalType === 'Other' && !form.otherAnimalName.trim()) ||
+                (step === 2 && !form.description.trim()) ||
+                (step === 3 && form.images.length === 0) ||
+                (step === 4 && (!form.latitude || !form.longitude || !form.locationNote.trim()))
+              }
               onClick={() => setStep((current) => Math.min(current + 1, steps.length - 1))}
             >
               Next <ArrowRight size={18} />
