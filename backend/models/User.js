@@ -1,36 +1,72 @@
-const mongoose = require('mongoose')
+const { DataTypes } = require('sequelize')
+const { sequelize } = require('../config/db')
 
-const userSchema = new mongoose.Schema(
+const User = sequelize.define(
+  'User',
   {
-    fullName: { type: String, required: true },
-    email: { type: String, required: true, unique: true, lowercase: true },
-    mobile: { type: String },
-    city: { type: String },
-    password: { type: String, required: true },
-    role: {
-      type: String,
-      enum: ['Citizen', 'NGO', 'Volunteer', 'Veterinarian', 'Authority', 'Admin'],
-      default: 'Citizen',
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
-    profileImage: { type: String },
+    fullName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+      },
+      set(value) {
+        this.setDataValue('email', value ? value.toLowerCase().trim() : '')
+      },
+    },
+    mobile: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    role: {
+      type: DataTypes.ENUM('Citizen', 'NGO', 'Volunteer', 'Veterinarian', 'Authority', 'Admin'),
+      defaultValue: 'Citizen',
+    },
+    profileImage: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    name: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return this.fullName
+      },
+    },
+    phone: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return this.mobile
+      },
+    },
+    _id: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return this.id
+      },
+    },
   },
-  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
+  {
+    tableName: 'users',
+    timestamps: true,
+  },
 )
 
-userSchema.virtual('name')
-  .get(function () {
-    return this.fullName
-  })
-  .set(function (value) {
-    this.fullName = value
-  })
-
-userSchema.virtual('phone')
-  .get(function () {
-    return this.mobile
-  })
-  .set(function (value) {
-    this.mobile = value
-  })
-
-module.exports = mongoose.model('User', userSchema)
+module.exports = User

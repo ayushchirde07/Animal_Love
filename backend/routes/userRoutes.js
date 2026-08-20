@@ -6,7 +6,13 @@ const { updateProfile, changePassword, getProfileStats } = require('../controlle
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '..', 'uploads'))
+    const dest = process.env.VERCEL ? path.join('/tmp', 'uploads') : path.join(__dirname, '..', 'uploads')
+    try {
+      if (!fs.existsSync(dest)) {
+        fs.mkdirSync(dest, { recursive: true })
+      }
+    } catch (e) {}
+    cb(null, dest)
   },
   filename: (req, file, cb) => {
     const timestamp = Date.now()

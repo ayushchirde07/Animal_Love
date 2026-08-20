@@ -1,22 +1,29 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const User = require('../models/User')
+const { User } = require('../models')
 
 const normalizeText = (value) => (typeof value === 'string' ? value.trim() : '')
 
 const toPublicUser = (user) => ({
-  id: user._id,
+  id: user.id,
+  _id: user.id,
   name: user.fullName,
+  fullName: user.fullName,
   email: user.email,
   phone: user.mobile || '',
+  mobile: user.mobile || '',
   city: user.city || '',
   role: user.role,
   profileImage: user.profileImage || null,
 })
 
-const findUserByEmail = (email) => {
-  const escapedEmail = email.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  return User.findOne({ email: { $regex: `^${escapedEmail}$`, $options: 'i' } })
+const findUserByEmail = async (email) => {
+  if (!email) return null
+  return User.findOne({
+    where: {
+      email: email.trim().toLowerCase(),
+    },
+  })
 }
 
 exports.register = async (req, res) => {
@@ -52,8 +59,8 @@ exports.register = async (req, res) => {
       user: toPublicUser(user),
     })
   } catch (error) {
-    console.error(error)
-    if (error?.code === 11000) {
+    console.error('Register error:', error)
+    if (error.name === 'SequelizeUniqueConstraintError') {
       return res.status(400).json({ message: 'Email already in use' })
     }
     return res.status(500).json({ message: 'Server error' })
@@ -79,16 +86,18 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' })
     }
 
-    const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, {
-      expiresIn: '7d',
-    })
+    const token = jwt.sign(
+      { userId: user.id, role: user.role },
+      process.env.JWT_SECRET || 'secret_jwt_key',
+      { expiresIn: '7d' },
+    )
 
     return res.json({
       token,
       user: toPublicUser(user),
     })
   } catch (error) {
-    console.error(error)
+    console.error('Login error:', error)
     return res.status(500).json({ message: 'Server error' })
   }
 }
@@ -103,17 +112,22 @@ const buildProfileImageUrl = (req, imagePath) => {
 
 exports.me = async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId).select('-password')
+    const user = await User.findByPk(req.user.userId, {
+      attributes: { exclude: ['password'] },
+    })
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
     const profileImage = buildProfileImageUrl(req, user.profileImage)
     return res.json({
       user: {
-        id: user._id,
+        id: user.id,
+        _id: user.id,
         name: user.fullName,
+        fullName: user.fullName,
         email: user.email,
         phone: user.mobile,
+        mobile: user.mobile,
         city: user.city,
         role: user.role,
         profileImage,
@@ -122,7 +136,7 @@ exports.me = async (req, res) => {
       },
     })
   } catch (error) {
-    console.error(error)
+    console.error('Me error:', error)
     return res.status(500).json({ message: 'Server error' })
   }
 }

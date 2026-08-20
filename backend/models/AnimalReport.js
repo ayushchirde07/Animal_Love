@@ -1,23 +1,90 @@
-const mongoose = require('mongoose')
+const { DataTypes } = require('sequelize')
+const { sequelize } = require('../config/db')
 
-const animalReportSchema = new mongoose.Schema(
+const AnimalReport = sequelize.define(
+  'AnimalReport',
   {
-    reportId: { type: String, required: true, unique: true },
-    reporter: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    animalType: { type: String, required: true },
-    condition: { type: String, required: true },
-    severity: { type: String, required: true },
-    description: { type: String, required: true },
-    images: [{ type: String }],
-    video: { type: String },
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    reportId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    reporterId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    animalType: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    condition: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    severity: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    images: {
+      type: DataTypes.JSON,
+      defaultValue: [],
+      get() {
+        const raw = this.getDataValue('images')
+        if (Array.isArray(raw)) return raw
+        if (typeof raw === 'string') {
+          try {
+            return JSON.parse(raw)
+          } catch (e) {
+            return [raw]
+          }
+        }
+        return []
+      },
+    },
+    video: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    latitude: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    longitude: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    locationNote: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     location: {
-      latitude: { type: String },
-      longitude: { type: String },
-      note: { type: String },
+      type: DataTypes.VIRTUAL,
+      get() {
+        return {
+          latitude: this.latitude,
+          longitude: this.longitude,
+          note: this.locationNote,
+        }
+      },
+      set(val) {
+        if (val) {
+          if (val.latitude !== undefined) this.setDataValue('latitude', val.latitude)
+          if (val.longitude !== undefined) this.setDataValue('longitude', val.longitude)
+          if (val.note !== undefined) this.setDataValue('locationNote', val.note)
+        }
+      },
     },
     status: {
-      type: String,
-      enum: [
+      type: DataTypes.ENUM(
         'SUBMITTED',
         'UNDER_REVIEW',
         'ACCEPTED',
@@ -30,11 +97,20 @@ const animalReportSchema = new mongoose.Schema(
         'RECOVERED',
         'COMPLETED',
         'CANCELLED',
-      ],
-      default: 'SUBMITTED',
+      ),
+      defaultValue: 'SUBMITTED',
+    },
+    _id: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return this.id
+      },
     },
   },
-  { timestamps: true },
+  {
+    tableName: 'animal_reports',
+    timestamps: true,
+  },
 )
 
-module.exports = mongoose.model('AnimalReport', animalReportSchema)
+module.exports = AnimalReport

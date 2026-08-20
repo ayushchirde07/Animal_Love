@@ -1,12 +1,37 @@
-const mongoose = require('mongoose')
+const { DataTypes } = require('sequelize')
+const { sequelize } = require('../config/db')
 
-const analyticsSchema = new mongoose.Schema(
+const Analytics = sequelize.define(
+  'Analytics',
   {
-    eventType: { type: String, required: true },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    payload: { type: mongoose.Schema.Types.Mixed },
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    eventType: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    payload: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
+    _id: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return this.id
+      },
+    },
   },
-  { timestamps: true },
+  {
+    tableName: 'analytics',
+    timestamps: true,
+  },
 )
 
-module.exports = mongoose.model('Analytics', analyticsSchema)
+module.exports = Analytics

@@ -1,8 +1,6 @@
 const bcrypt = require('bcryptjs')
-const path = require('path')
-const fs = require('fs')
-const User = require('../models/User')
-const AnimalReport = require('../models/AnimalReport')
+const { Op } = require('sequelize')
+const { User, AnimalReport } = require('../models')
 
 const buildProfileImageUrl = (req, imagePath) => {
   if (!imagePath) return null
@@ -19,32 +17,31 @@ exports.updateProfile = async (req, res) => {
       return res.status(400).json({ message: 'Full name and city are required.' })
     }
 
-    const updates = {
-      fullName: fullName.trim(),
-      city: city.trim(),
-      mobile: phone ? phone.trim() : '',
-    }
-
-    if (req.file) {
-      updates.profileImage = `/uploads/${req.file.filename}`
-    } else if (removeProfileImage === 'true' || removeProfileImage === true) {
-      updates.profileImage = null
-    }
-
-    const user = await User.findByIdAndUpdate(req.user.userId, updates, {
-      new: true,
-      runValidators: true,
-    }).select('-password')
-
+    const user = await User.findByPk(req.user.userId)
     if (!user) {
       return res.status(404).json({ message: 'User not found.' })
     }
 
+    user.fullName = fullName.trim()
+    user.city = city.trim()
+    user.mobile = phone ? phone.trim() : user.mobile
+
+    if (req.file) {
+      user.profileImage = `/uploads/${req.file.filename}`
+    } else if (removeProfileImage === 'true' || removeProfileImage === true) {
+      user.profileImage = null
+    }
+
+    await user.save()
+
     const responseUser = {
-      id: user._id,
+      id: user.id,
+      _id: user.id,
       name: user.fullName,
+      fullName: user.fullName,
       email: user.email,
       phone: user.mobile,
+      mobile: user.mobile,
       city: user.city,
       role: user.role,
       profileImage: buildProfileImageUrl(req, user.profileImage),
@@ -54,7 +51,7 @@ exports.updateProfile = async (req, res) => {
 
     return res.json({ message: 'Profile updated successfully.', user: responseUser })
   } catch (error) {
-    console.error(error)
+    console.error('Update profile error:', error)
     return res.status(500).json({ message: 'Unable to update profile. Please try again.' })
   }
 }
@@ -70,7 +67,7 @@ exports.changePassword = async (req, res) => {
       return res.status(400).json({ message: 'New password must be at least 8 characters.' })
     }
 
-    const user = await User.findById(req.user.userId)
+    const user = await User.findByPk(req.user.userId)
     if (!user) {
       return res.status(404).json({ message: 'User not found.' })
     }
@@ -86,26 +83,40 @@ exports.changePassword = async (req, res) => {
 
     return res.json({ message: 'Password updated successfully.' })
   } catch (error) {
-    console.error(error)
+    console.error('Change password error:', error)
     return res.status(500).json({ message: 'Unable to update password. Please try again.' })
   }
 }
 
 exports.getProfileStats = async (req, res) => {
   try {
-    const totalReports = await AnimalReport.countDocuments({ reporter: req.user.userId })
-    const pendingReports = await AnimalReport.countDocuments({
-      reporter: req.user.userId,
-      status: { $in: ['SUBMITTED', 'UNDER_REVIEW', 'ACCEPTED', 'VOLUNTEER_ASSIGNED', 'ON_THE_WAY', 'TREATMENT_STARTED'] },
+    const userId = req.user.userId
+    const totalReports = await AnimalReport.count({ where: { reporterId: userId } })
+    const pendingReports = await AnimalReport.count({
+      where: {
+        reporterId: userId,
+        status: {
+          [Op.in]: [
+            'SUBMITTED',
+            'UNDER_REVIEW',
+            'ACCEPTED',
+            'VOLUNTEER_ASSIGNED',
+            'ON_THE_WAY',
+            'TREATMENT_STARTED',
+          ],
+        },
+      },
     })
-    const completedReports = await AnimalReport.countDocuments({
-      reporter: req.user.userId,
-      status: { $in: ['RECOVERED', 'COMPLETED'] },
+    const completedReports = await AnimalReport.count({
+      where: {
+        reporterId: userId,
+        status: { [Op.in]: ['RECOVERED', 'COMPLETED'] },
+      },
     })
 
     return res.json({ totalReports, pendingReports, completedReports })
   } catch (error) {
-    console.error(error)
+    console.error('Profile stats error:', error)
     return res.status(500).json({ message: 'Unable to load profile statistics.' })
   }
 }
