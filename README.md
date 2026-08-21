@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./frontend/public/favicon.svg" alt="Animal Guardian Logo" width="120" />
+  <img alt="Animal Guardian Logo" width="120" />
   <h1>🐾 Animal Guardian</h1>
   <p><strong>Rescue aid for every injured and endangered animal.</strong></p>
 
