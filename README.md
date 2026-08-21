@@ -1,8 +1,6 @@
 <div align="center">
-  <img alt="Animal Guardian Logo" width="120" />
   <h1>🐾 Animal Guardian</h1>
   <p><strong>Rescue aid for every injured and endangered animal.</strong></p>
-
   <p>
     <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react" alt="React" /></a>
     <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/Node.js-Express-green?style=for-the-badge&logo=nodedotjs" alt="Node.js" /></a>
