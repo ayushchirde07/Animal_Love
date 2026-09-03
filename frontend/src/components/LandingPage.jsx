@@ -86,9 +86,9 @@ export default function LandingPage() {
             <Link to="/login" className="button button-primary">
               Get Started
             </Link>
-            <a href="#" className="button button-secondary">
+            <Link to="/learn-more" className="button button-secondary">
               Learn More
-            </a>
+            </Link>
           </motion.div>
         </div>
 
