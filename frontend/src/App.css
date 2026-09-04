@@ -107,7 +107,7 @@
   border-radius: 2rem;
   background: var(--surface);
   box-shadow: 0 32px 80px rgba(15, 23, 42, 0.12);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .panel-top {
@@ -293,6 +293,7 @@
 }
 
 @media (max-width: 980px) {
+
   .landing-hero,
   .feature-grid,
   .stats-grid,
@@ -1170,6 +1171,7 @@
 }
 
 @media (max-width: 980px) {
+
   .button-group,
   .location-grid,
   .review-grid,
@@ -1212,5 +1214,291 @@
 
   .workflow-card-header {
     flex-direction: column;
+  }
+}
+
+/* ============================================================
+   Learn More Page
+   ============================================================ */
+
+.learn-more-page {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 3.5rem 0 5rem;
+  display: grid;
+  gap: 5rem;
+}
+
+.lm-back-row {
+  margin-bottom: -3rem;
+}
+
+/* Hero */
+.lm-hero {
+  display: grid;
+  gap: 0;
+}
+
+.lm-hero-title {
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  margin: 0.5rem 0 1.25rem;
+  color: var(--text);
+  max-width: 18ch;
+}
+
+.lm-hero-sub {
+  max-width: 60ch;
+  color: var(--muted);
+  font-size: 1.05rem;
+  margin: 0 0 2rem;
+}
+
+/* Section wrapper */
+.lm-section {
+  display: grid;
+  gap: 2.5rem;
+}
+
+/* Stats grid */
+.lm-stats-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.lm-stat-card {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.75rem;
+  border-radius: 1.75rem;
+  background: var(--surface);
+  box-shadow: 0 20px 55px rgba(15, 23, 42, 0.08);
+}
+
+.lm-stat-card .stat-value {
+  font-size: 2.2rem;
+}
+
+/* How it works — steps */
+.lm-steps-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.lm-step-card {
+  position: relative;
+  padding: 1.75rem;
+  border-radius: 1.75rem;
+  background: var(--surface);
+  box-shadow: 0 20px 55px rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 1rem;
+}
+
+.lm-step-number {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--primary-soft);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.lm-step-card h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.lm-step-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Features override to go 4-col */
+.lm-feature-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Role cards */
+.lm-roles-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.lm-role-card {
+  padding: 2rem;
+  border-radius: 1.75rem;
+  background: var(--surface);
+  box-shadow: 0 20px 55px rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 1.5rem;
+}
+
+.lm-role-header {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.lm-role-header h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.2rem;
+}
+
+.lm-role-desc {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.lm-cap-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.lm-cap-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--text);
+  font-size: 0.97rem;
+}
+
+.lm-cap-list li svg {
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+/* Trust / quote */
+.lm-trust-card {
+  padding: 2.5rem;
+  border-radius: 2rem;
+  background: var(--surface);
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 1.5rem;
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.lm-trust-stars {
+  display: flex;
+  gap: 0.3rem;
+  color: #f59e0b;
+}
+
+.lm-quote {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.65;
+  color: var(--text);
+  font-style: italic;
+  border-left: 3px solid var(--primary);
+  padding-left: 1.25rem;
+}
+
+.lm-quote-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.lm-author-avatar {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.lm-author-name {
+  margin: 0 0 0.2rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.lm-author-role {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* FAQ */
+.lm-faq-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.lm-faq-card {
+  padding: 1.75rem;
+  border-radius: 1.5rem;
+  background: var(--surface);
+  box-shadow: 0 16px 45px rgba(15, 23, 42, 0.07);
+}
+
+.lm-faq-card h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.lm-faq-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: 0.97rem;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .lm-feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lm-stats-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+
+  .lm-steps-grid,
+  .lm-roles-grid,
+  .lm-faq-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lm-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .learn-more-page {
+    width: min(100%, calc(100% - 1.5rem));
+    gap: 3.5rem;
+  }
+
+  .lm-stats-grid,
+  .lm-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lm-trust-card {
+    padding: 1.75rem;
   }
 }

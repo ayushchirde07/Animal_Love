@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LandingPage from './components/LandingPage'
+import LearnMorePage from './pages/LearnMorePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import CitizenDashboard from './pages/CitizenDashboard'
@@ -20,11 +21,12 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/learn-more" element={<LearnMorePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route
           element={
-            <ProtectedRoute allowedRoles={[ 'Citizen' ]}>
+            <ProtectedRoute allowedRoles={['Citizen']}>
               <DashboardLayout />
             </ProtectedRoute>
           }
@@ -38,7 +40,7 @@ function App() {
         </Route>
         <Route
           element={
-            <ProtectedRoute allowedRoles={[ 'NGO' ]}>
+            <ProtectedRoute allowedRoles={['NGO']}>
               <DashboardLayout />
             </ProtectedRoute>
           }
