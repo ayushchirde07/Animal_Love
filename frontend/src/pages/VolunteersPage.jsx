@@ -13,9 +13,10 @@ import {
   Calendar,
   ArrowLeft,
   CheckCircle2,
+  Trash2,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { fetchVolunteers, addVolunteer } from '../services/volunteerService'
+import { fetchVolunteers, addVolunteer, removeVolunteer } from '../services/volunteerService'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -45,6 +46,8 @@ export default function VolunteersPage() {
   const [submitting, setSubmitting] = useState(false)
   const [formError, setFormError] = useState('')
   const [successMsg, setSuccessMsg] = useState('')
+  const [confirmDelete, setConfirmDelete] = useState(null) // volunteer object
+  const [deleting, setDeleting] = useState(false)
 
   const loadVolunteers = async () => {
     setLoading(true)
@@ -93,6 +96,20 @@ export default function VolunteersPage() {
       )
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  const handleDeleteConfirmed = async () => {
+    if (!confirmDelete) return
+    setDeleting(true)
+    try {
+      await removeVolunteer(confirmDelete.id)
+      setVolunteers((prev) => prev.filter((v) => v.id !== confirmDelete.id))
+      setConfirmDelete(null)
+    } catch (err) {
+      alert(err?.response?.data?.message || 'Failed to remove volunteer.')
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -186,6 +203,7 @@ export default function VolunteersPage() {
                     <th>Mobile</th>
                     <th>City</th>
                     <th>Joined</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -210,6 +228,16 @@ export default function VolunteersPage() {
                       <td>{v.mobile || <span className="vol-muted">—</span>}</td>
                       <td>{v.city || <span className="vol-muted">—</span>}</td>
                       <td>{formatDate(v.createdAt)}</td>
+                      <td>
+                        <button
+                          className="vol-delete-btn"
+                          onClick={() => setConfirmDelete(v)}
+                          aria-label={`Remove ${v.fullName}`}
+                          title="Remove volunteer"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </td>
                     </motion.tr>
                   ))}
                 </tbody>
@@ -271,7 +299,7 @@ export default function VolunteersPage() {
                     <input
                       name="email"
                       type="email"
-                      placeholder="volunteer@example.com"
+                      placeholder="name@nagpur.ngo.in"
                       value={form.email}
                       onChange={handleFormChange}
                       required
@@ -343,6 +371,52 @@ export default function VolunteersPage() {
                   </div>
                 </form>
               )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Confirm Delete Modal */}
+      <AnimatePresence>
+        {confirmDelete && (
+          <motion.div
+            className="vol-modal-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={(e) => e.target === e.currentTarget && setConfirmDelete(null)}
+          >
+            <motion.div
+              className="vol-modal vol-confirm-modal"
+              initial={{ opacity: 0, scale: 0.94, y: 24 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 24 }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+            >
+              <div className="vol-confirm-icon">
+                <Trash2 size={28} />
+              </div>
+              <h2>Remove Volunteer?</h2>
+              <p>
+                Are you sure you want to remove <strong>{confirmDelete.fullName}</strong>?
+                This action cannot be undone.
+              </p>
+              <div className="vol-modal-actions">
+                <button
+                  className="button button-secondary"
+                  onClick={() => setConfirmDelete(null)}
+                  disabled={deleting}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="button vol-confirm-delete-btn"
+                  onClick={handleDeleteConfirmed}
+                  disabled={deleting}
+                >
+                  {deleting ? 'Removing…' : 'Yes, Remove'}
+                </button>
+              </div>
             </motion.div>
           </motion.div>
         )}

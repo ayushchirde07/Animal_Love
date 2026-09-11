@@ -181,3 +181,25 @@ exports.registerVolunteer = async (req, res) => {
     return res.status(500).json({ message: 'Server error.' })
   }
 }
+
+exports.deleteVolunteer = async (req, res) => {
+  try {
+    if (req.user.role !== 'NGO') {
+      return res.status(403).json({ message: 'Only NGO accounts can remove volunteers.' })
+    }
+
+    const volunteer = await User.findByPk(req.params.id)
+    if (!volunteer) {
+      return res.status(404).json({ message: 'Volunteer not found.' })
+    }
+    if (volunteer.role !== 'Volunteer') {
+      return res.status(400).json({ message: 'This user is not a volunteer.' })
+    }
+
+    await volunteer.destroy()
+    return res.json({ message: 'Volunteer removed successfully.' })
+  } catch (error) {
+    console.error('Delete volunteer error:', error)
+    return res.status(500).json({ message: 'Server error.' })
+  }
+}

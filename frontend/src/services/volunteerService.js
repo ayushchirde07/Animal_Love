@@ -5,3 +5,6 @@ export const fetchVolunteers = () =>
 
 export const addVolunteer = (payload) =>
   api.post('/api/users/volunteers', payload).then((res) => res.data)
+
+export const removeVolunteer = (id) =>
+  api.delete(`/api/users/volunteers/${id}`).then((res) => res.data)
