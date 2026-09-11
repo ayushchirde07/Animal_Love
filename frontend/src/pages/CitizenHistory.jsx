@@ -108,7 +108,7 @@ export default function CitizenHistory() {
                         {report.images.map((img, idx) => {
                           const srcUrl = img.startsWith('data:image') || img.startsWith('http') 
                             ? img 
-                            : `http://localhost:5000${img.startsWith('/') ? img : '/' + img}`
+                            : `http://localhost:5001${img.startsWith('/') ? img : '/' + img}`
                           return (
                              <img key={idx} src={srcUrl} alt="Animal" style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8, border: '1px solid var(--border)' }} />
                           )

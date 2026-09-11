@@ -60,7 +60,7 @@ export default function RescueWorkflow() {
 
   useEffect(() => {
     // connect to backend socket for real-time updates
-    const socketUrl = (import.meta.env && import.meta.env.VITE_API_URL) || 'http://localhost:5000'
+    const socketUrl = (import.meta.env && import.meta.env.VITE_API_URL) || 'http://localhost:5001'
     const socket = io(socketUrl, { transports: ['websocket', 'polling'] })
 
     socket.on('connect', () => {
@@ -201,7 +201,7 @@ export default function RescueWorkflow() {
                           {report.images.map((img, idx) => {
                             const srcUrl = img.startsWith('data:image') || img.startsWith('http') 
                               ? img 
-                              : `http://localhost:5000${img.startsWith('/') ? img : '/' + img}`
+                              : `http://localhost:5001${img.startsWith('/') ? img : '/' + img}`
                             return (
                                <img key={idx} src={srcUrl} alt="Animal" style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8, border: '1px solid var(--border)' }} />
                             )

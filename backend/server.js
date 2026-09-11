@@ -15,7 +15,7 @@ const analyticsRoutes = require('./routes/analyticsRoutes')
 dotenv.config()
 
 const app = express()
-const PORT = process.env.PORT || 5000
+const PORT = Number(process.env.PORT) || 5001
 
 // Safe uploads directory handling for serverless and local environments
 const uploadsDir = process.env.VERCEL
