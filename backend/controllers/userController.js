@@ -120,3 +120,64 @@ exports.getProfileStats = async (req, res) => {
     return res.status(500).json({ message: 'Unable to load profile statistics.' })
   }
 }
+
+exports.getVolunteers = async (req, res) => {
+  try {
+    const volunteers = await User.findAll({
+      where: { role: 'Volunteer' },
+      attributes: ['id', 'fullName', 'email', 'mobile', 'city', 'createdAt'],
+      order: [['createdAt', 'DESC']],
+    })
+    return res.json({ volunteers })
+  } catch (error) {
+    console.error('Get volunteers error:', error)
+    return res.status(500).json({ message: 'Unable to fetch volunteers.' })
+  }
+}
+
+exports.registerVolunteer = async (req, res) => {
+  try {
+    if (req.user.role !== 'NGO') {
+      return res.status(403).json({ message: 'Only NGO accounts can add volunteers.' })
+    }
+
+    const { fullName, email, mobile, city, password } = req.body
+    if (!fullName || !email || !password) {
+      return res.status(400).json({ message: 'Name, email, and password are required.' })
+    }
+
+    const normalizedEmail = email.trim().toLowerCase()
+    const existing = await User.findOne({ where: { email: normalizedEmail } })
+    if (existing) {
+      return res.status(400).json({ message: 'Email already in use.' })
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const volunteer = await User.create({
+      fullName: fullName.trim(),
+      email: normalizedEmail,
+      mobile: mobile ? mobile.trim() : '',
+      city: city ? city.trim() : '',
+      password: hashedPassword,
+      role: 'Volunteer',
+    })
+
+    return res.status(201).json({
+      message: 'Volunteer registered successfully.',
+      volunteer: {
+        id: volunteer.id,
+        fullName: volunteer.fullName,
+        email: volunteer.email,
+        mobile: volunteer.mobile,
+        city: volunteer.city,
+        createdAt: volunteer.createdAt,
+      },
+    })
+  } catch (error) {
+    console.error('Register volunteer error:', error)
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      return res.status(400).json({ message: 'Email already in use.' })
+    }
+    return res.status(500).json({ message: 'Server error.' })
+  }
+}

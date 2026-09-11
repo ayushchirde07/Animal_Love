@@ -116,7 +116,7 @@ export default function NGODashboard() {
           <Link to="/ngo/workflow" className="button button-primary">
             Review requests
           </Link>
-          <button className="button button-secondary">Manage volunteers</button>
+          <Link to="/ngo/volunteers" className="button button-secondary">Manage volunteers</Link>
         </div>
       </section>
 

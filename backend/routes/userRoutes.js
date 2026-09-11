@@ -2,7 +2,7 @@ const express = require('express')
 const multer = require('multer')
 const path = require('path')
 const authMiddleware = require('../middleware/authMiddleware')
-const { updateProfile, changePassword, getProfileStats } = require('../controllers/userController')
+const { updateProfile, changePassword, getProfileStats, getVolunteers, registerVolunteer } = require('../controllers/userController')
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -37,5 +37,7 @@ const router = express.Router()
 router.patch('/profile', authMiddleware, upload.single('profileImage'), updateProfile)
 router.patch('/change-password', authMiddleware, changePassword)
 router.get('/profile/stats', authMiddleware, getProfileStats)
+router.get('/volunteers', authMiddleware, getVolunteers)
+router.post('/volunteers', authMiddleware, registerVolunteer)
 
 module.exports = router

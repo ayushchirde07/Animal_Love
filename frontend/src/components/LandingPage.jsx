@@ -35,11 +35,7 @@ const features = [
   },
 ]
 
-const stats = [
-  { value: '1.2K+', label: 'Rescue reports' },
-  { value: '98%', label: 'Response rate' },
-  { value: '450+', label: 'Active volunteers' },
-]
+
 
 export default function LandingPage() {
   const { theme, setTheme } = useTheme()
@@ -83,7 +79,7 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
           >
-            <Link to="/login" className="button button-primary">
+            <Link to="/select-role" className="button button-primary">
               Get Started
             </Link>
             <Link to="/learn-more" className="button button-secondary">
@@ -92,40 +88,6 @@ export default function LandingPage() {
           </motion.div>
         </div>
 
-        <motion.div
-          className="hero-panel"
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
-        >
-          <div className="panel-top">
-            <div>
-              <p className="panel-label">Live rescue status</p>
-              <h2>AG-2026-0001</h2>
-            </div>
-            <span className="status-pill">SUBMITTED</span>
-          </div>
-          <div className="status-timeline">
-            <div className="timeline-step active">Submitted</div>
-            <div className="timeline-step">Under review</div>
-            <div className="timeline-step">Accepted</div>
-            <div className="timeline-step">On the way</div>
-          </div>
-          <div className="panel-details">
-            <div>
-              <p className="label">Animal</p>
-              <p>Stray dog with injury</p>
-            </div>
-            <div>
-              <p className="label">Location</p>
-              <p>Greenwood Park, Sector 5</p>
-            </div>
-            <div>
-              <p className="label">Severity</p>
-              <p>High</p>
-            </div>
-          </div>
-        </motion.div>
       </section>
 
       <section className="feature-section">
@@ -154,22 +116,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="stats-section">
-        <div className="stats-card">
-          <div>
-            <p className="section-meta">Impact numbers</p>
-            <h2>Trusted by rescue teams and citizens alike.</h2>
-          </div>
-          <div className="stats-grid">
-            {stats.map((stat) => (
-              <div key={stat.label} className="stat-item">
-                <p className="stat-value">{stat.value}</p>
-                <p className="stat-label">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="cta-section">
         <div>
@@ -179,7 +125,7 @@ export default function LandingPage() {
             treatment, and completion.
           </p>
         </div>
-        <Link to="/login" className="button button-primary cta-button">
+        <Link to="/select-role" className="button button-primary cta-button">
           Report an Animal
         </Link>
       </section>

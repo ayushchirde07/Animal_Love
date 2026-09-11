@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LandingPage from './components/LandingPage'
 import LearnMorePage from './pages/LearnMorePage'
+import SelectRolePage from './pages/SelectRolePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import CitizenDashboard from './pages/CitizenDashboard'
@@ -11,6 +12,7 @@ import RescueWorkflow from './pages/RescueWorkflow'
 import AnimalReport from './pages/AnimalReport'
 import ProfilePage from './pages/ProfilePage'
 import SettingsPage from './pages/SettingsPage'
+import VolunteersPage from './pages/VolunteersPage'
 import DashboardLayout from './components/DashboardLayout'
 import ProtectedRoute from './routes/ProtectedRoute'
 import './App.css'
@@ -22,7 +24,9 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/learn-more" element={<LearnMorePage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/select-role" element={<SelectRolePage />} />
+        <Route path="/login/:role" element={<LoginPage />} />
+        <Route path="/login" element={<SelectRolePage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route
           element={
@@ -47,6 +51,7 @@ function App() {
         >
           <Route path="/ngo/dashboard" element={<NGODashboard />} />
           <Route path="/ngo/workflow" element={<RescueWorkflow />} />
+          <Route path="/ngo/volunteers" element={<VolunteersPage />} />
           <Route path="/ngo/profile" element={<ProfilePage />} />
           <Route path="/ngo/notifications" element={<NotificationsPage />} />
           <Route path="/ngo/settings" element={<SettingsPage />} />

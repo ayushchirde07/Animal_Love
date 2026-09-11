@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Eye, EyeOff } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 
 export default function RegisterPage() {
+  const role = 'Citizen'
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [mobile, setMobile] = useState('')
   const [city, setCity] = useState('')
-  const [role, setRole] = useState('Citizen')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -45,6 +45,9 @@ export default function RegisterPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: 'easeOut' }}
       >
+        <Link to="/login/citizen" className="auth-back-link">
+          <ArrowLeft size={18} /> Back to login
+        </Link>
         <div className="auth-head">
           <p className="section-meta">Join Animal Guardian</p>
           <h1>Create your account</h1>
@@ -98,37 +101,6 @@ export default function RegisterPage() {
             />
           </label>
 
-          <fieldset className="role-fieldset">
-            <legend>Account type</legend>
-            <div className="role-options">
-              <label className={`role-option ${role === 'Citizen' ? 'selected' : ''}`}>
-                <input
-                  type="radio"
-                  name="role"
-                  value="Citizen"
-                  checked={role === 'Citizen'}
-                  onChange={(event) => setRole(event.target.value)}
-                />
-                <span>
-                  <strong>Citizen</strong>
-                  <small>Report animal rescues and follow progress.</small>
-                </span>
-              </label>
-              <label className={`role-option ${role === 'NGO' ? 'selected' : ''}`}>
-                <input
-                  type="radio"
-                  name="role"
-                  value="NGO"
-                  checked={role === 'NGO'}
-                  onChange={(event) => setRole(event.target.value)}
-                />
-                <span>
-                  <strong>NGO</strong>
-                  <small>Review requests and coordinate rescue operations.</small>
-                </span>
-              </label>
-            </div>
-          </fieldset>
 
 
           <label className="password-field">
@@ -185,7 +157,7 @@ export default function RegisterPage() {
           </button>
 
           <p className="auth-footer">
-            Already registered? <a href="/login">Login</a>
+            Already registered? <Link to="/login/citizen">Login</Link>
           </p>
         </form>
       </motion.section>
