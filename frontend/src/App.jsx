@@ -28,6 +28,7 @@ function App() {
         <Route path="/login/:role" element={<LoginPage />} />
         <Route path="/login" element={<SelectRolePage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/register/citizen" element={<RegisterPage />} />
         <Route
           element={
             <ProtectedRoute allowedRoles={['Citizen']}>

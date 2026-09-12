@@ -224,10 +224,10 @@ export default function LearnMorePage() {
                     animate="visible"
                     custom={3}
                 >
-                    <Link to="/register" className="button button-primary">
+                    <Link to="/register/citizen" className="button button-primary">
                         Get Started Free
                     </Link>
-                    <Link to="/login" className="button button-secondary">
+                    <Link to="/login/citizen" className="button button-secondary">
                         Sign In
                     </Link>
                 </motion.div>
@@ -430,7 +430,7 @@ export default function LearnMorePage() {
                         across the country. It's free, fast, and built for impact.
                     </p>
                 </div>
-                <Link to="/register" className="button button-primary cta-button">
+                <Link to="/register/citizen" className="button button-primary cta-button">
                     Create Free Account
                 </Link>
             </section>
